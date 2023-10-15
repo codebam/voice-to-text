@@ -1,4 +1,4 @@
-import mic from "mic";
+import { spawn } from "child_process";
 import fs from "fs";
 
 const API_TOKEN = process.env._CLOUDFLARE_GLOBAL_API_TOKEN;
@@ -21,22 +21,17 @@ const whisper = async (file) => {
 	return await res.json();
 };
 
-const micInstance = mic({
-	rate: "16000",
-	channels: "1",
-});
-const micInputStream = micInstance.getAudioStream();
-const outputFileStream = fs.WriteStream("output.wav");
-micInputStream.pipe(outputFileStream);
-micInstance.start();
+const child = spawn("arecord output.wav", { shell: true });
 setTimeout(() => {
-	micInstance.stop();
+	child.kill();
 	fs.readFile("output.wav", async (err, data) => {
 		if (err) {
 			console.error("Error reading the file:", err);
 			return;
 		}
 		const arrayBuffer = data.buffer;
-		console.log((await whisper(arrayBuffer)).result.text.replace(/^ /, ""));
+		console.log(
+			(await whisper(arrayBuffer)).result.text.replace(/^ /, "").toLowerCase()
+		);
 	});
 }, 5000);
