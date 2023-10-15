@@ -1,0 +1,1 @@
+wtype "$(node index.js)"
