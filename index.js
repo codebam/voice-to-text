@@ -21,7 +21,7 @@ const whisper = async (file) => {
 	return await res.json();
 };
 
-const child = spawn("arecord output.wav", { shell: true });
+const child = spawn("arecord -f S16_LE output.wav", { shell: true });
 setTimeout(() => {
 	child.kill();
 	fs.readFile("output.wav", async (err, data) => {
