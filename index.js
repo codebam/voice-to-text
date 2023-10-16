@@ -3,7 +3,6 @@ import fs from "fs";
 
 const API_TOKEN = process.env._CLOUDFLARE_API_TOKEN;
 const ACCOUNT_ID = process.env._CLOUDFLARE_ACCOUNT_ID;
-const ACCOUNT_EMAIL = process.env._CLOUDFLARE_ACCOUNT_EMAIL;
 
 const whisper = async (file) => {
 	const res = await fetch(
