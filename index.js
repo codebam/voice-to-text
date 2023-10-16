@@ -1,7 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs";
 
-const API_TOKEN = process.env._CLOUDFLARE_GLOBAL_API_TOKEN;
+const API_TOKEN = process.env._CLOUDFLARE_API_TOKEN;
 const ACCOUNT_ID = process.env._CLOUDFLARE_ACCOUNT_ID;
 const ACCOUNT_EMAIL = process.env._CLOUDFLARE_ACCOUNT_EMAIL;
 
@@ -9,11 +9,7 @@ const whisper = async (file) => {
 	const res = await fetch(
 		`https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/@cf/openai/whisper`,
 		{
-			headers: {
-				"Content-Type": "application/json",
-				"X-Auth-Email": ACCOUNT_EMAIL,
-				"X-Auth-Key": API_TOKEN,
-			},
+			headers: { Authorization: `Bearer ${API_TOKEN}` },
 			body: file,
 			method: "POST",
 		}
